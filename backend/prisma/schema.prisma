@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Role enum for different user types in the fintech system
+enum Role {
+  INPUTTER  // Can create transactions
+  APPROVER  // Can view and approve transactions
+  AUDITOR   // Can only view transactions
+}
+
+// Status enum for transaction lifecycle
+enum TransactionStatus {
+  PENDING   // Waiting for approval
+  APPROVED  // Approved by an approver
+  REJECTED  // Rejected by an approver
+}
+
+// User model with different roles for the fintech system
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  firstName String
+  lastName  String
+  role      Role
+  transactions Transaction[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+// Transaction model for financial transactions
+model Transaction {
+  id          String            @id @default(cuid())
+  amount      Decimal
+  description String
+  status      TransactionStatus @default(PENDING)
+  createdBy   String
+  user        User              @relation(fields: [createdBy], references: [id])
+  approvedBy  String?
+  approvedAt  DateTime?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@map("transactions")
+}
