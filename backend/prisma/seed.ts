@@ -1,18 +1,22 @@
 import { PrismaClient, Role, TransactionStatus } from '@prisma/client';
+import * as bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
 async function main() {
   console.log('🌱 Starting database seeding...');
 
+  // Hash password for demo users
   const plainPassword = 'password123';
+  const hashedPassword = await bcrypt.hash(plainPassword, 10);
 
+  // Create users with different roles
   const inputter = await prisma.user.upsert({
     where: { email: 'inputter@example.com' },
     update: {},
     create: {
       email: 'inputter@example.com',
-      password: plainPassword,
+      password: hashedPassword,
       firstName: 'John',
       lastName: 'Inputter',
       role: Role.INPUTTER,
@@ -24,7 +28,7 @@ async function main() {
     update: {},
     create: {
       email: 'approver@example.com',
-      password: plainPassword,
+      password: hashedPassword,
       firstName: 'Jane',
       lastName: 'Approver',
       role: Role.APPROVER,
@@ -36,7 +40,7 @@ async function main() {
     update: {},
     create: {
       email: 'auditor@example.com',
-      password: plainPassword,
+      password: hashedPassword,
       firstName: 'Mike',
       lastName: 'Auditor',
       role: Role.AUDITOR,
