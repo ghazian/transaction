@@ -135,43 +135,6 @@ PATCH  /transactions/:id/approve # Approve transaction (APPROVER only)
 npm test
 ```
 
-## 🗂️ Project Structure
-
-```
-src/
-├── auth/                 # Authentication module
-│   ├── auth.controller.ts
-│   ├── auth.service.ts
-│   ├── jwt.strategy.ts
-│   ├── guards/          # Auth guards
-│   └── dto/             # Data transfer objects
-├── transactions/        # Transaction module
-│   ├── transactions.controller.ts
-│   ├── transactions.service.ts
-│   ├── transactions.service.spec.ts
-│   └── dto/
-├── users/              # User management
-├── prisma/             # Database service
-└── app.module.ts       # Root module
-
-prisma/
-├── schema.prisma       # Database schema
-├── migrations/         # Database migrations
-└── seed.ts            # Database seeding
-```
-
-## 🔧 Development
-
-### Available Scripts
-
-```bash
-npm run build          # Build for production
-npm run format         # Format code with Prettier
-npm run lint           # Lint code with ESLint
-npm run start:dev      # Development server
-npm run db:seed        # Seed database
-```
-
 ### Database Commands
 
 ```bash
@@ -219,11 +182,4 @@ Common HTTP status codes:
 - `403`: Forbidden (insufficient permissions)
 - `404`: Not Found (resource doesn't exist)
 - `409`: Conflict (duplicate data)
-
-## 🔍 Monitoring & Debugging
-
-- **Logging**: Built-in NestJS logger
-- **Health Checks**: Database connectivity validation
-- **Error Tracking**: Comprehensive error messages
-- **Request Validation**: Automatic DTO validation
 

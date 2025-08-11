@@ -1,6 +1,6 @@
 # Transaction Management System - Frontend
 
-A modern React frontend application for managing financial transactions with role-based access control, real-time updates, and comprehensive transaction workflow management.
+A modern React frontend application for managing financial transactions with role-based access control, and comprehensive transaction workflow management.
 
 ## 🏗️ Architecture
 
@@ -27,8 +27,8 @@ This frontend provides a complete user interface for the transaction management 
 
 ## 📋 Prerequisites
 
-- Node.js 22+
-- npm 
+- Node.js 23+
+- npm
 - Backend API running on port 3001 (see backend README)
 
 ## 🚀 Getting Started
@@ -80,23 +80,6 @@ The application will be available at `http://localhost:5173`
 - **APPROVER**: View all transactions and approve/reject pending ones
 - **AUDITOR**: Read-only access to all transactions
 
-## 🧩 Component Architecture
-
-### Extracted Components
-
-We've refactored the application for better maintainability:
-
-```
-src/components/
-├── dashboard/
-│   ├── DashboardHeader.tsx          # Header with user info and logout
-│   ├── CreateTransactionModal.tsx   # Modal for creating transactions
-│   ├── TransactionsList.tsx         # Main transaction list orchestrator
-│   ├── TransactionsTable.tsx        # Data table with actions
-│   ├── TransactionStates.tsx        # Loading/error/empty states
-│   └── utils.ts                     # Status and role badge utilities
-```
-
 ### Component Benefits
 
 - ✅ **Single Responsibility**: Each component has one clear purpose
@@ -135,7 +118,6 @@ const {
 ```
 
 ## 🧪 Testing
-
 
 ### Running Tests
 
