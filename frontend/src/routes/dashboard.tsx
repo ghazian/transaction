@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { authService } from "../services/auth";
 import { transactionsService } from "../services/transactions";
-import DashboardHeader from "../components/dashboard/header";
+import DashboardHeader from "../components/Dashboard/header";
 import TransactionsList from "../components/TransactionList/TransactionsList";
 import CreateTransactionModal from "../components/TransactionList/CreateTransactionModal";
 

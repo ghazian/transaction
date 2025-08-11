@@ -2,7 +2,7 @@ import type { FC } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { transactionsService } from "../../services/transactions";
 import type { Transaction } from "../../services/transactions";
-import { getRoleBadge, getStatusBadge } from "../dashboard/utils";
+import { getRoleBadge, getStatusBadge } from "../Dashboard/utils";
 
 interface TransactionsTableProps {
   transactions: Transaction[];

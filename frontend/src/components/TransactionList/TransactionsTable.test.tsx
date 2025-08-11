@@ -49,7 +49,6 @@ describe("TransactionsTable", () => {
       />
     );
 
-    // Add your test assertions here
     expect(screen.getByText("Transaction")).toBeInTheDocument();
   });
 
