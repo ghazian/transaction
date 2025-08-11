@@ -51,7 +51,8 @@ class AuthService {
       );
     }
 
-    return response.json();
+    const result = await response.json();
+    return result;
   }
 
   async register(data: RegisterRequest): Promise<AuthResponse> {
@@ -74,16 +75,16 @@ class AuthService {
   }
 
   getToken(): string | null {
-    return localStorage.getItem("auth_token");
+    return localStorage.getItem("access_token");
   }
 
   setToken(token: string): void {
-    localStorage.setItem("auth_token", token);
+    localStorage.setItem("access_token", token);
     window.dispatchEvent(new Event("authStatusChanged"));
   }
 
   removeToken(): void {
-    localStorage.removeItem("auth_token");
+    localStorage.removeItem("access_token");
     window.dispatchEvent(new Event("authStatusChanged"));
   }
 
@@ -105,11 +106,22 @@ class AuthService {
   logout(queryClient: QueryClient): void {
     this.removeToken();
     this.removeCurrentUser();
+    // Clear all session storage
+    sessionStorage.clear();
+    // Clear all query cache
     queryClient.clear();
   }
 
   isAuthenticated(): boolean {
     return !!this.getToken();
+  }
+
+  getAuthHeaders(): Record<string, string> {
+    const token = this.getToken();
+    return {
+      "Content-Type": "application/json",
+      ...(token && { Authorization: `Bearer ${token}` }),
+    };
   }
 }
 

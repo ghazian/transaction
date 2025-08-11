@@ -1,7 +1,11 @@
-import { PrismaService } from 'src/prisma/prisma.service';
+import {
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateTransactionDto } from './dto/transactions.dto';
 import { Role, Transaction, TransactionStatus } from '@prisma/client';
-import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
 
 export interface TransactionWithUser extends Transaction {
   user: {
@@ -12,11 +16,23 @@ export interface TransactionWithUser extends Transaction {
   };
 }
 
+@Injectable()
 export class TransactionsService {
   constructor(private prisma: PrismaService) {}
 
-  async findAll(): Promise<Transaction[]> {
-    return this.prisma.transaction.findMany();
+  async findAll(): Promise<TransactionWithUser[]> {
+    return this.prisma.transaction.findMany({
+      include: {
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+            role: true,
+          },
+        },
+      },
+    });
   }
 
   async create(

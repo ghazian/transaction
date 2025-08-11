@@ -1,13 +1,15 @@
+import { authService } from "./auth";
+
 const API_BASE_URL = "http://localhost:3001";
 
 export interface Transaction {
   id: string;
-  amount: number;
+  amount: number | string; // Can be string when coming from backend (Prisma Decimal)
   description: string;
   status: "PENDING" | "APPROVED" | "REJECTED";
   createdBy: string;
-  approvedBy?: string;
-  approvedAt?: string;
+  approvedBy?: string | null;
+  approvedAt?: string | null;
   createdAt: string;
   updatedAt: string;
   user?: {
@@ -27,39 +29,33 @@ export interface ApproveTransactionRequest {
   comment?: string;
 }
 
+// Utility function to ensure amount is a number
+export const normalizeTransaction = (
+  transaction: Transaction
+): Transaction => ({
+  ...transaction,
+  amount:
+    typeof transaction.amount === "string"
+      ? parseFloat(transaction.amount)
+      : transaction.amount,
+});
+
 class TransactionsService {
-  private getAuthHeaders() {
-    const token = localStorage.getItem("auth_token");
-    return {
-      "Content-Type": "application/json",
-      ...(token && { Authorization: `Bearer ${token}` }),
-    };
-  }
-
   async getTransactions(): Promise<Transaction[]> {
-    const token = localStorage.getItem("auth_token");
-    console.log(
-      "Making request with token:",
-      token ? "Token present" : "No token"
-    );
-
     const response = await fetch(`${API_BASE_URL}/transactions`, {
-      headers: this.getAuthHeaders(),
+      method: "GET",
+      headers: authService.getAuthHeaders(),
     });
-
-    console.log("Response status:", response.status);
 
     if (!response.ok) {
       const error = await response.json();
-      console.log("Error response:", error);
       throw new Error(
         Array.isArray(error.message) ? error.message[0] : error.message
       );
     }
 
-    const data = await response.json();
-    console.log("Transactions data:", data);
-    return data;
+    const transactions = await response.json();
+    return transactions.map(normalizeTransaction);
   }
 
   async createTransaction(
@@ -67,7 +63,7 @@ class TransactionsService {
   ): Promise<Transaction> {
     const response = await fetch(`${API_BASE_URL}/transactions`, {
       method: "POST",
-      headers: this.getAuthHeaders(),
+      headers: authService.getAuthHeaders(),
       body: JSON.stringify(data),
     });
 
@@ -78,7 +74,8 @@ class TransactionsService {
       );
     }
 
-    return response.json();
+    const transaction = await response.json();
+    return normalizeTransaction(transaction);
   }
 
   async approveTransaction(
@@ -87,7 +84,7 @@ class TransactionsService {
   ): Promise<Transaction> {
     const response = await fetch(`${API_BASE_URL}/transactions/${id}/approve`, {
       method: "POST",
-      headers: this.getAuthHeaders(),
+      headers: authService.getAuthHeaders(),
       body: JSON.stringify(data || {}),
     });
 
@@ -98,7 +95,8 @@ class TransactionsService {
       );
     }
 
-    return response.json();
+    const transaction = await response.json();
+    return normalizeTransaction(transaction);
   }
 }
 
