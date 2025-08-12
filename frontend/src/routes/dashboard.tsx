@@ -23,6 +23,7 @@ function Dashboard() {
   } = useQuery({
     queryKey: ["transactions"],
     queryFn: transactionsService.getTransactions,
+    refetchInterval: 5000, // Poll every 5 seconds
   });
 
   if (!currentUser) {

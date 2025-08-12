@@ -21,24 +21,13 @@ export interface Transaction {
 }
 
 export interface CreateTransactionRequest {
-  amount: number;
+  amount: number | string;
   description: string;
 }
 
 export interface ApproveTransactionRequest {
   comment?: string;
 }
-
-// Utility function to ensure amount is a number
-export const normalizeTransaction = (
-  transaction: Transaction
-): Transaction => ({
-  ...transaction,
-  amount:
-    typeof transaction.amount === "string"
-      ? parseFloat(transaction.amount)
-      : transaction.amount,
-});
 
 class TransactionsService {
   async getTransactions(): Promise<Transaction[]> {
@@ -55,7 +44,7 @@ class TransactionsService {
     }
 
     const transactions = await response.json();
-    return transactions.map(normalizeTransaction);
+    return transactions;
   }
 
   async createTransaction(
@@ -75,7 +64,7 @@ class TransactionsService {
     }
 
     const transaction = await response.json();
-    return normalizeTransaction(transaction);
+    return transaction;
   }
 
   async approveTransaction(
@@ -96,7 +85,7 @@ class TransactionsService {
     }
 
     const transaction = await response.json();
-    return normalizeTransaction(transaction);
+    return transaction;
   }
 }
 

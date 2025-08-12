@@ -26,7 +26,7 @@ This backend provides a complete REST API for managing financial transactions wi
 
 ## 📋 Prerequisites
 
-- Node.js 22+
+- Node.js 23+
 - npm 
 
 ## 🚀 Getting Started

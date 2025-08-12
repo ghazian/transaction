@@ -39,7 +39,7 @@ function Login() {
       ...prev,
       [e.target.name]: e.target.value,
     }));
-    setErrors(""); // Clear errors when user types
+    setErrors(""); 
   };
 
   return (

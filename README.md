@@ -15,7 +15,7 @@
 
 ### Backend
 
-- **Framework**: NestJS (Node.js **_v22+_**)
+- **Framework**: NestJS (Node.js **_v23+_**)
 - **Database**: SQLite with Prisma ORM
 - **Authentication**: JWT with Passport.js
 - **API Documentation**: Swagger/OpenAPI
@@ -152,13 +152,21 @@ Remove stale database in root of **/backend** directory
 }
 ```
 
-#### Endpoints with Permissions
+#### Endpoints 
+- ##### Auth
 
-| Endpoint                             | Inputter | Approver | Auditor |
-| ------------------------------------ | -------- | -------- | ------- |
-| `GET /api/transactions`              | ✅       | ✅       | ✅      |
-| `POST /api/transactions`             | ✅       | ❌       | ❌      |
-| `POST /api/transactions/:id/approve` | ❌       | ✅       | ❌      |
+   | Endpoint       | Body                                                                                                                                 |   |   |   |
+   |----------------|--------------------------------------------------------------------------------------------------------------------------------------|---|---|---|
+   | `POST /auth/register` | `{ "email": "jane.smith@example.com", "password": "wowPass123", "firstName": "Jane", "lastName": "Smith", "role": "<Role>" }` |   |   |   |
+   | `POST /auth/login`    | `{ "email": "john.doe@example.com", "password": "wowPass123" }`                                                                 |   |   |   |
+
+- ##### Permissions
+
+   | Endpoint                             | Inputter | Approver | Auditor |
+   | ------------------------------------ | -------- | -------- | ------- |
+   | `GET /transactions`              | ✅       | ✅       | ✅      |
+   | `POST /transactions`             | ✅       | ❌       | ❌      |
+   | `POST /transactions/:id/approve` | ❌       | ✅       | ❌      |
 
 ## 🧠 Design Decisions
 

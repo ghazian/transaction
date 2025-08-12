@@ -1,8 +1,14 @@
-import { createRootRoute, Link, Outlet, useNavigate } from "@tanstack/react-router";
+import {
+  createRootRoute,
+  Link,
+  Outlet,
+  useNavigate,
+} from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { authService } from "../services/auth";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { getRoleBadge } from "../components/Dashboard/utils";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -22,42 +28,12 @@ function Navigation() {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // Check auth status on mount and when storage changes
-    const checkAuth = () => {
-      setIsAuthenticated(authService.isAuthenticated());
-      setCurrentUser(authService.getCurrentUser());
-    };
-
-    checkAuth();
-
-    // Listen for storage changes (when user logs in/out in another tab)
-    window.addEventListener("storage", checkAuth);
-
-    // Custom event for when auth status changes in the same tab
-    window.addEventListener("authStatusChanged", checkAuth);
-
-    return () => {
-      window.removeEventListener("storage", checkAuth);
-      window.removeEventListener("authStatusChanged", checkAuth);
-    };
-  }, []);
-
   const handleLogout = () => {
     authService.logout(queryClient);
     setIsAuthenticated(false);
     setCurrentUser(null);
     window.dispatchEvent(new Event("authStatusChanged"));
     navigate({ to: "/login" });
-  };
-
-  const getRoleBadge = (role: string) => {
-    const roleStyles = {
-      INPUTTER: "bg-blue-100 text-blue-800",
-      APPROVER: "bg-purple-100 text-purple-800",
-      AUDITOR: "bg-orange-100 text-orange-800",
-    };
-    return `px-2 py-1 rounded text-xs font-medium ${roleStyles[role as keyof typeof roleStyles] || "bg-gray-100 text-gray-800"}`;
   };
 
   return (

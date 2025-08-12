@@ -16,7 +16,7 @@ const CreateTransactionModal: FC<CreateTransactionModalProps> = ({
   const queryClient = useQueryClient();
   const [newTransaction, setNewTransaction] =
     useState<CreateTransactionRequest>({
-      amount: 0,
+      amount: "",
       description: "",
     });
 
@@ -40,13 +40,13 @@ const CreateTransactionModal: FC<CreateTransactionModalProps> = ({
     const { name, value } = e.target;
     setNewTransaction((prev) => ({
       ...prev,
-      [name]: name === "amount" ? parseFloat(value) || 0 : value,
+      [name]: name === "amount" ? parseFloat(value) : value,
     }));
   };
 
   const handleClose = () => {
     onClose();
-    setNewTransaction({ amount: 0, description: "" });
+    setNewTransaction({ amount: "", description: "" });
   };
 
   if (!isOpen) {

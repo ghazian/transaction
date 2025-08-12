@@ -106,7 +106,6 @@ class AuthService {
   logout(queryClient: QueryClient): void {
     this.removeToken();
     this.removeCurrentUser();
-    // Clear all session storage
     sessionStorage.clear();
     // Clear all query cache
     queryClient.clear();

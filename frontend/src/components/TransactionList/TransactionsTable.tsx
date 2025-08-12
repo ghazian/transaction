@@ -99,7 +99,7 @@ const TransactionsTable: FC<TransactionsTableProps> = ({
                       <button
                         onClick={() => approveMutation.mutate(transaction.id)}
                         disabled={approveMutation.isPending}
-                        className="text-green-600 hover:text-green-700 font-medium"
+                        className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700 disabled:opacity-50 transition-colors font-medium"
                       >
                         Approve
                       </button>
