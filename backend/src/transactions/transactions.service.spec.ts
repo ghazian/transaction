@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
-import { TransactionStatus } from '@prisma/client';
+import { TransactionStatus } from '../generated/prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 
 describe('TransactionsService', () => {

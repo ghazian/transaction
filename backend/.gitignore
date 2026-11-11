@@ -3,6 +3,9 @@
 /node_modules
 /build
 
+# Prisma Client is generated code, not source (regenerated via postinstall)
+/src/generated/prisma
+
 # Logs
 logs
 *.log
@@ -14,10 +17,14 @@ lerna-debug.log*
 
 # OS
 .DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
 
 # Tests
 /coverage
 /.nyc_output
+*.lcov
 
 # IDEs and editors
 /.idea
@@ -27,8 +34,10 @@ lerna-debug.log*
 *.launch
 .settings/
 *.sublime-workspace
+*.swp
+*.swo
 
-# IDE - VSCode
+# IDE - VSCode / Cursor
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
@@ -37,10 +46,8 @@ lerna-debug.log*
 
 # dotenv environment variable files
 .env
-.env.development.local
-.env.test.local
-.env.production.local
-.env.local
+.env.*
+!.env.example
 
 # temp directory
 .temp
@@ -52,10 +59,18 @@ pids
 *.seed
 *.pid.lock
 
-# Database
-prisma/dev.db
+# SQLite databases (including WAL/SHM sidecars)
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+
+# TypeScript / tooling caches
+*.tsbuildinfo
+.eslintcache
+.npm
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
-
-/generated/prisma

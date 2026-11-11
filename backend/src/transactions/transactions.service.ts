@@ -4,7 +4,11 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { CreateTransactionDto } from './dto/transactions.dto';
-import { Role, Transaction, TransactionStatus } from '@prisma/client';
+import {
+  Role,
+  Transaction,
+  TransactionStatus,
+} from '../generated/prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 
 export interface TransactionWithUser extends Transaction {

@@ -7,12 +7,12 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { Role, User } from '@prisma/client';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { Role, User } from '../generated/prisma/client';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
 import { TransactionsService } from './transactions.service';
 import { CreateTransactionDto } from './dto/transactions.dto';
-import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Roles } from '../auth/decorators/roles.decorator';
 
 interface AuthenticatedRequest extends Request {
   user: User;

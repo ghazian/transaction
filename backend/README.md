@@ -9,14 +9,14 @@ This backend provides a complete REST API for managing financial transactions wi
 - **Authentication & Authorization**: JWT-based auth with role-based access control
 - **Transaction Management**: Create, approve, and audit financial transactions
 - **User Management**: Multi-role user system (INPUTTER, APPROVER, AUDITOR)
-- **Database**: SQLite with Prisma ORM
+- **Database**: PostgreSQL with Prisma ORM
 - **API Documentation**: Swagger/OpenAPI integration
 - **Testing**: Comprehensive unit and integration tests
 
 ## 🛠️ Tech Stack
 
 - **Framework**: NestJS (Node.js)
-- **Database**: SQLite with Prisma ORM
+- **Database**: PostgreSQL 17 with Prisma ORM 7 (`prisma-client` generator + `@prisma/adapter-pg`)
 - **Authentication**: JWT with Passport.js
 - **API Documentation**: Swagger/OpenAPI
 - **Testing**: Jest
@@ -26,58 +26,59 @@ This backend provides a complete REST API for managing financial transactions wi
 
 ## 📋 Prerequisites
 
-- Node.js 23+
-- npm 
+- Node.js 24.14+ (see `.nvmrc`)
+- npm
+- Docker (for the local PostgreSQL instance)
 
 ## 🚀 Getting Started
 
 ### 1. Clone and Install Dependencies
 
 ```bash
-# CD to /backend
-cd backend/
+git clone <repository-url>
+cd <repo-folder>
 
-# Install dependencies
+# Optional: match .nvmrc (nvm-windows)
+nvm install 24.14.0
+nvm use 24.14.0
+
 npm install
-
-# Generate Prisma client
-npx prisma generate
 ```
+
+`npm install` runs `prisma generate` automatically via `postinstall`. Prisma 7 no
+longer generates the client for you, and it writes to `src/generated/prisma`
+rather than `node_modules`, so this step is required before the project compiles.
 
 ### 2. Environment Setup
 
-Create a `.env` file in the root directory of ***/backend***:
-
-```env
-# Database
-DATABASE_URL="file:./dev.db"
-
-# JWT Configuration
-JWT_SECRET="your-super-secret-jwt-key-change-this-in-production-fintech-transaction-app-2025"
-JWT_EXPIRES_IN="24h"
-
+```bash
+cp .env.example .env
 ```
+
+On Windows PowerShell: `Copy-Item .env.example .env`
+
+`JWT_SECRET` is required — the app fails fast on startup if it is missing.
+The default `DATABASE_URL` matches the Docker Compose credentials below.
 
 ### 3. Database Setup
 
-```bash
-# Create and migrate database
-npx prisma db push
+Start PostgreSQL, apply migrations, then seed:
 
-# Seed database with initial data
+```bash
+docker compose up -d
+npx prisma migrate dev
 npm run db:seed
 ```
 
 ### 4. Run the Application
 
 ```bash
-# Development mode with hot reload
-npm run dev
+npm run start:dev
 ```
 
 The API will be available at `http://localhost:3001`
 
-The Swagger Documentation will be at `http://localhost:3001/api`
+The Swagger documentation will be at `http://localhost:3001/api`
 
 ## 📊 Database Schema
 
@@ -141,11 +142,20 @@ npm test
 # View database in Prisma Studio
 npx prisma studio
 
-# Reset database (destructive!)
-npx prisma db push --force-reset
+# Create and apply a new migration after editing schema.prisma
+npm run db:migrate
 
-# Generate Prisma client after schema changes
+# Reset database and replay all migrations (destructive!)
+npx prisma migrate reset
+
+# Regenerate Prisma Client after schema changes (no longer automatic in v7)
 npx prisma generate
+
+# Stop Postgres, keeping the data volume
+docker compose down
+
+# Stop Postgres and delete all data
+docker compose down -v
 ```
 
 ## 🛡️ Security Features

@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { TransactionStatus, Role } from '@prisma/client';
+import { TransactionStatus, Role } from '../../generated/prisma/client';
 import {
   IsNotEmpty,
   IsString,
@@ -50,10 +50,12 @@ export class TransactionResponseDto {
   id: string;
 
   @ApiProperty({
-    description: 'Transaction amount',
-    example: 1500.5,
+    description:
+      'Transaction amount as a decimal string. Serialized from a Postgres DECIMAL(12,2) via Decimal.js, so it is a string rather than a number to avoid float precision loss.',
+    type: 'string',
+    example: '1500.50',
   })
-  amount: number;
+  amount: string;
 
   @ApiProperty({
     description: 'Transaction description',
